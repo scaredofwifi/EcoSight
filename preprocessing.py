@@ -66,3 +66,38 @@ plt.imshow(closedImg, cmap='Greys_r')
 plt.show(block=True)
 
 # Now we try to extract the boundary of the image from the filled in binary image using "sobel filters"
+sobelx64f = cv2.Sobel(closedImg, cv2.CV_64F, 1, 0, ksize=5)
+# once again the kernel size is up in the air. Most documentation in showing 5 so thats what I am going with
+# calculating the absolute value of our ndarry here, without it things were not looking good. Kind of a bandaid fix
+abs_sobelx64f = np.absolute(sobelx64f)
+# converting into uint8 so that we can do a more simplified thresholding later
+sobel_8u = np.uint8(abs_sobelx64f)
+plt.imshow(abs_sobelx64f, cmap='Greys_r')
+plt.show(block=True)
+# getting decent results off sobel filters but going to try and use another type of morphological transformation
+# called Dilation. Instead of closing holes like we did earlier with morph trans, we will try and expand the width of
+# our boundary that we just extracted to make it more defined and noticable. Giving us more data to work with.
+# this probably won't be optimal for all images after using sobel filters but will be for some
+# TODO: Create method to determine whether or not to send the image through another round of MorphTrans (Dialation)
+dilationImg = cv2.dilate(abs_sobelx64f, (10, 10), 2)
+plt.imshow(dilationImg, cmap='Greys_r')
+plt.show(block=True)
+# this is not very effective so maybe we need to just not do it at all. Played with kernel values and it did not do much
+# gonna run with it for now though because it does make a bit of difference. Later on when we are developing feature
+# extraction we can see if it is just a waste of time in terms of its effects on accuracy
+
+retSobel, binSobel = cv2.threshold(sobel_8u,1,255,cv2.THRESH_BINARY)
+plt.imshow(binSobel,cmap='Greys_r')
+plt.show(block=True)
+# this was a far more effective method in terms of defining the outline better, I just ran it through another
+# binary threshold iteration but instead of it being inverted, it is standard.
+
+# going to try and close the edges with ONE MORE morphological transformation so that the edges are cleaner
+tempKernel2 = np.ones((10, 5), np.uint8)
+closedEdgesSobelBin = cv2.morphologyEx(binSobel, cv2.MORPH_CLOSE, tempKernel2)
+plt.imshow(closedEdgesSobelBin, cmap='Greys_r')
+plt.show(block=True)
+# not getting a clean border without any holes with any kernel value in tempKernel2
+# going to try another method of border extraction using contours
+
+
