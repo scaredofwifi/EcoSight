@@ -86,7 +86,7 @@ plt.show(block=True)
 # gonna run with it for now though because it does make a bit of difference. Later on when we are developing feature
 # extraction we can see if it is just a waste of time in terms of its effects on accuracy
 
-retSobel, binSobel = cv2.threshold(sobel_8u,1,255,cv2.THRESH_BINARY)
+retSobel, binSobel = cv2.threshold(sobel_8u, 1, 255, cv2.THRESH_BINARY)
 plt.imshow(binSobel,cmap='Greys_r')
 plt.show(block=True)
 # this was a far more effective method in terms of defining the outline better, I just ran it through another
@@ -99,5 +99,57 @@ plt.imshow(closedEdgesSobelBin, cmap='Greys_r')
 plt.show(block=True)
 # not getting a clean border without any holes with any kernel value in tempKernel2
 # going to try another method of border extraction using contours
+
+
+# going to try some contours stuff here
+contours, hierarchy, = cv2.findContours(closedImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+print(len(contours))
+
+cnt = contours[0]
+print(len(cnt))
+
+plottedContours = cv2.drawContours(grayScale, contours, -1, (0, 255, 0), 5)
+plt.imshow(plottedContours, cmap='Greys_r')
+plt.show(block=True)
+
+# FEATURE EXTRACTION
+# Here we calculate the "image moments" which is basically the center of a "blob"
+# a blob is a group of adjacent pixels that share a common property, i.e. grayscale value
+# so by calculating the center of these blobs, we can identify features of the image
+
+moments = cv2.moments(cnt)
+print(moments)
+
+area = cv2.contourArea(cnt)
+print(area)
+
+perimeter = cv2.arcLength(cnt, True)
+print(perimeter)
+
+rect = cv2.minAreaRect(cnt)
+box = cv2.boxPoints(rect)
+box = np.int0(box)
+contours_im = cv2.drawContours(closedImg, [box], 0, (255, 255, 255), 2)
+plt.imshow(contours_im, cmap='Greys_r')
+plt.show(block=True)
+
+ellipse = cv2.fitEllipse(cnt)
+im = cv2.ellipse(closedImg, ellipse, (255, 255, 255), 2)
+plt.imshow(closedImg, cmap="Greys_r")
+
+x, y, w, h = cv2.boundingRect(cnt)
+aspectRatio = float(w)/h
+print(aspectRatio)
+
+rectangularity = w*h/area
+print(rectangularity)
+
+circularity = (perimeter**2/area)
+print(circularity)
+
+equiDiameter = np.sqrt(4*area/np.pi)
+print(equiDiameter)
+
+(x, y), (MA, ma), angle = cv2.fitEllipse(cnt)
 
 
