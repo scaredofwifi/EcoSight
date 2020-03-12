@@ -1,45 +1,55 @@
-import pandas
+import pandas as pd
 
 class dataFrameManager:
 
     dfDict = {}
+
     def __init__(self):
         return
 
-    def createnewdataframe(dataframename: str) -> bool:
+    def createnewdataframe(self, dataframename: str) -> bool:
         if dataframename in dfDict:
             print("Dataframe"+ dataframename + "already exists in the dataframe mangager \n")
             return False
-        else
+        else:
             newDataFrame = pd.DataFrame(columns= {"Img.Datastd", "Img.DataGS","Img.DataBlurred","Img.DataMorph",
                                          "Aspect Ration","Rectangularity","Circularity","Classification"})
             dfDict[dataframename] = newDataFrame
             if dataframename in dfdict:
                 return True
-            else
+            else:
                 print("Not able to create the dataframe " + dataframename)
                 return False
+
     def adddf(self,dataframename: str,  dataframe: pd.DataFrame):
         if dataframename in dfDict:
             print("Dataframe"+ dataframename + "already exists in the dataframe mangager \n")
             return
         else:
             dfDict[dataframename] = dataframe
-    def getdf(dataframename: str) -> pd.DataFrame:
+
+    def hasdf(self, dataframename: str) -> bool:
+        if dataframename in dfDict:
+            return True
+        else:
+            return False
+
+    def getdf(self, dataframename: str) -> pd.DataFrame:
         if dataframename in dfDict:
             return dfDict[dataframename]
-        else
-            print("Could not find " + dataframename + "in the dataframe manager \n")
-            return
-    def deletedf(dataframename: str):
-        if dataframename in dfDict:
-            dfDict.delete(dataframename)
-            return
-        else
+        else:
             print("Could not find " + dataframename + "in the dataframe manager \n")
             return
 
-    def appendtodataframe(dataframename: str, values: list) -> pd.DataFrame:
+    def deletedf(self, dataframename: str):
+        if dataframename in dfDict:
+            dfDict.delete(dataframename)
+            return
+        else:
+            print("Could not find " + dataframename + "in the dataframe manager \n")
+            return
+
+    def appendtodataframe(self, dataframename: str, values: list) -> pd.DataFrame:
         if dataframename in dfDict:
             dataframe = self.getdf(dataframename)
             newDf = dataframe.append({values[0, values[1], values[2], values[3],
