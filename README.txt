@@ -12,7 +12,7 @@ EcoSight Image Processing
   4) scikitlearn
   5) matplotlib
   
- 
+
 Image Processing will be broken into multiple python scripts. 
 The first of which is preprocessing.py. This will be the first part of the 
 image processing pipline.
@@ -24,3 +24,24 @@ preprocessing.py simply:
   5) does boundary detection using sobel filters
   
 This image preprocessing will allow us to do feature detection in the next part of the image processing pipeline.
+
+EcoSightDFM.py 
+
+Acts as a way for us to manage all data gained from the image processing. It creates an API, in the form of a "Dataframe Manager", 
+designed for more convienient interactions with pandas and our specific use of it. It makes sure that image data is partitioned into 
+certain classifications an allows image processing data to be easier to import into a pandas data frame. Pandas makes csv manipulation 
+and decision tree algorithms simple. 
+
+The highlights of the dmf API are:
+
+  createnewdataframe(dataframename=x)
+      creates an empty and new image classification dataframe. Key is designated by the dataframename
+      parameter
+  
+  appendtodataframe(dataframename=x, values=y[])
+      allows you to add a list of image processing information to a dataframe which is accessed by
+      the key given in first parameter
+  
+  printdataframes() 
+      allows you to see all dataframes created and active in the dataframe manager
+      
