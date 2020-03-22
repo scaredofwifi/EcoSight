@@ -3,6 +3,8 @@ import os
 import cv2
 from matplotlib import pyplot as plt
 from EcoSightDFM import DataFrameManager
+import backgroundsubtract as bgsub
+
 
 global dfm
 dfm = DataFrameManager()
@@ -12,7 +14,9 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      imgFilePath =  'C://Users/Cade Norman/Desktop/School/Capstone/plant images/' + imgFile
      print(os.path.exists(imgFilePath))
      mesImg = cv2.imread(imgFilePath)
-     img = cv2.cvtColor(mesImg, cv2.COLOR_BGR2RGB)
+     img1 = bgsub.subtract_background(mesImg)
+
+     img = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
      plt.imshow(mesImg)
      plt.show(block=True)
      # turning on matplotlib's interactive mode. Not sure why its necessary, but it is.
