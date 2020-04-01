@@ -14,9 +14,12 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      imgFilePath =  'C://Users/Cade Norman/Desktop/School/Capstone/plant images/' + imgFile
      print(os.path.exists(imgFilePath))
      mesImg = cv2.imread(imgFilePath)
-     img1 = bgsub.subtract_background(mesImg)
 
-     img = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+     img1, cnt = bgsub.subtract_background(mesImg)
+     plt.imshow(img1, cmap='Greys_r')
+     plt.show(block=True)
+
+     '''img = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
      plt.imshow(mesImg)
      plt.show(block=True)
      # turning on matplotlib's interactive mode. Not sure why its necessary, but it is.
@@ -37,11 +40,11 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      retVal, thresholdImg = cv2.threshold(gBlur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
      plt.imshow(thresholdImg, cmap='Greys_r')
      plt.show(block=True)
-
+   '''
     # so now we use a method called "morphological transformation" to close the holes of the binary image
      tempKernel = np.ones((10, 10), np.uint8)
     # TODO: Figure out a method based on the items listed above to determine optimal kernel values for necessary operations
-     closedImg = cv2.morphologyEx(thresholdImg, cv2.MORPH_CLOSE, tempKernel)
+     closedImg = cv2.morphologyEx(img1, cv2.MORPH_CLOSE, tempKernel)
      plt.imshow(closedImg, cmap='Greys_r')
      plt.show(block=True)
 
@@ -67,8 +70,8 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      closedEdgesSobelBin = cv2.morphologyEx(binSobel, cv2.MORPH_CLOSE, tempKernel2)
      plt.imshow(closedEdgesSobelBin, cmap='Greys_r')
      plt.show(block=True)
-
-     contours, hierarchy, = cv2.findContours(closedImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+     '''
+     _, contours, _ = cv2.findContours(closedImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
      print(len(contours))
 
      cnt = contours[0]
@@ -77,7 +80,7 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      plottedContours = cv2.drawContours(grayScale, contours, -1, (0, 255, 0), 5)
      plt.imshow(plottedContours, cmap='Greys_r')
      plt.show(block=True)
-
+     '''
     # FEATURE EXTRACTION
      moments = cv2.moments(cnt)
      print(moments)
@@ -95,9 +98,13 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      plt.imshow(contours_im, cmap='Greys_r')
      plt.show(block=True)
 
-     ellipse = cv2.fitEllipse(cnt)
-     im = cv2.ellipse(closedImg, ellipse, (255, 255, 255), 2)
-     plt.imshow(closedImg, cmap="Greys_r")
+     try:
+          ellipse = cv2.fitEllipse(cnt)
+          im = cv2.ellipse(closedImg, ellipse, (255, 255, 255), 2)
+          plt.imshow(closedImg, cmap="Greys_r")
+     except:
+          print("Fitting an ellipse failed")
+
 
      x, y, w, h = cv2.boundingRect(cnt)
      aspectRatio = float(w) / h
@@ -111,9 +118,13 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
 
      equiDiameter = np.sqrt(4 * area / np.pi)
      print(equiDiameter)
-
-     (x, y), (MA, ma), angle = cv2.fitEllipse(cnt)
-     attrList = list([img, grayScale, gBlur, thresholdImg, aspectRatio, rectangularity, circularity, classification])
+     try:
+          (x, y), (MA, ma), angle = cv2.fitEllipse(cnt)
+     except:
+          print("Could not calculate ellipse angle")
+          angle = 'null'
+     attrList = list([img1, aspectRatio, perimeter,
+                      area, rectangularity, circularity, equiDiameter, angle, classification])
      return attrList
 
 
