@@ -37,15 +37,15 @@ def readDB(collec):
 def createDoc(collec, docName, attrList):
     col_ref = db.collection(collec)
     new_val = {
-        u'aspectRatio': attrList[aspectRatio],
-        u'area': attrList[area],
-        u'perimeter': attrList[perimeter],
-        u'thresholdImg': attrList[thresholdImg],
-        u'rectangularity': attrList[rectangularity],
-        u'circularity': attrList[circularity],
-        u'equiDiameter': attrList[equiDiameter],
-        u'angle': attrList[angle],
-        u'classification': attrList[classification],
+        u'aspectRatio': attrList[0],
+        u'area': attrList[1],
+        u'perimeter': attrList[2],
+        u'thresholdImg': attrList[3],
+        u'rectangularity': attrList[4],
+        u'circularity': attrList[5],
+        u'equiDiameter': attrList[6],
+        u'angle': attrList[7],
+        u'classification': attrList[8],
     }
     col_ref.document(docName).create(new_val)
 
@@ -67,15 +67,15 @@ def createEmptyDoc(collec, docName):
 def setDocVals(collec, docName,attrList):
     doc_ref = db.collection(collec).document(docName)
     doc_ref.set({
-        u'aspectRatio': attrList[aspectRatio],
-        u'area': attrList[area],
-        u'perimeter': attrList[perimeter],
-        u'thresholdImg': attrList[thresholdImg],
-        u'rectangularity': attrList[rectangularity],
-        u'circularity': attrList[circularity],
-        u'equiDiameter': attrList[equiDiameter],
-        u'angle': attrList[angle],
-        u'classification': attrList[classification],
+        u'aspectRatio': attrList[0],
+        u'area': attrList[1],
+        u'perimeter': attrList[2],
+        u'thresholdImg': attrList[3],
+        u'rectangularity': attrList[4],
+        u'circularity': attrList[5],
+        u'equiDiameter': attrList[6],
+        u'angle': attrList[7],
+        u'classification': attrList[8],
     })
 
 def deleteDoc(collec, docName):
