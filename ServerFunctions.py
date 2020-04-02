@@ -2,6 +2,11 @@
 when you are going to call the methods: readDB, createDoc, createEmptyDoc, setDocVals, or deleteDoc. The arguments for collec
 and docName should be in the form of   u'collection/document name'  and any method that has the argument attrList should
 contain the attrList list from preprocessing.py
+
+the hierarchy exists as such collection->documents, in documents, data is held
+
+Keep in mind that, as far as I know, you cannot create a collection in python. if you'd like a new collection tell me and i'll add one
+for now though, there is one collection at the moment titled, family. To reference, see above, or here   u'family'
 '''
 
 import firebase_admin
@@ -76,3 +81,4 @@ def setDocVals(collec, docName,attrList):
 def deleteDoc(collec, docName):
     db.collection(collec).document(docName).delete()
 
+createCollec(u'test')
