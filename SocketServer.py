@@ -1,10 +1,9 @@
 # The socket server to communicate with the Android Studio Application and read in the images taken by the user
 
 import socket
-import struct
-import preprocessing as process
+# import preprocessing as process
 
-# define server values
+# set up server listener
 listensocket = socket.socket()
 Port = 8000
 maxConnections = 999
@@ -12,7 +11,7 @@ IP = socket.gethostname()  # get hostname of current machine
 
 listensocket.bind(('', Port))
 
-# open server
+# start server
 listensocket.listen(maxConnections)
 print("Server started at " + IP + " on port " + str(Port))
 
@@ -20,19 +19,24 @@ print("Server started at " + IP + " on port " + str(Port))
 (clientsocket, address) = listensocket.accept()
 print("New connection made!")
 
-buf = ''
-while len(buf) < 4:
-    buf += clientsocket.recv(4 - len(buf))
-size = struct.unpack('!i', buf)
-print("receiving %s bytes", size)
-with open('test.jpg', 'wb') as img:
-    while True:
-        data = clientsocket.recv(1024) # receive image
-        if not data:
-            break
-        img.write(data)
+# open file
+f = open('incoming.jpg', 'wb')  # TODO : change the filepath of this incoming image
+datain = 1
+
+# receive image
+while datain:
+    datain = clientsocket.recv(1024)  # get incoming data
+    if not datain:
+        break
+    f.write(datain)  # writes data to file
 
 print("received image!")
-process.imgpreprocessing(data)
+# process image
+# process.imgpreprocessing(data)
 
-clientsocket.close()
+# TODO : send image results back to client
+
+# close socket
+f.close()
+# clientsocket.close()
+listensocket.close()
