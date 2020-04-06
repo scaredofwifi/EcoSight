@@ -8,10 +8,11 @@ class DataFrameManager:
         pass
 
     def create_new_df(self, dataframename: str):
-        newDf = pd.DataFrame(columns = ['aspectRatio', 'area', 'perimeter', 'thresholdImg',
+        newDf = pd.DataFrame(columns = ['aspectRatio', 'area', 'perimeter',
                                         'rectangularity', 'circularity', 'equiDiameter',
                                         'angle', 'classification'])
-        self.dfDict.update(dataframename, newDf)
+        tempDict = {dataframename: newDf}
+        self.dfDict.update(tempDict)
         return
 
     def has_df(self, dataframename: str) -> bool:
@@ -33,12 +34,19 @@ class DataFrameManager:
             print("could not get_df. no dataframe called " + dataframename + 'exists')
 
     def append_to_df(self, dataframename: str, data: list):
-        rowDf = pd.DataFrame([data[0], data[1], data[2], data[3], data[4],
-                              data[5], data[6], data[6], data[7]])
+        print("Appending to dataframe: " + dataframename + '\n Data to append: ' + str(data))
+        rowDf = pd.DataFrame(data)
+        row = {'aspectRatio': data[0], 'area': data[1], 'perimeter': data[2],
+                                                     'rectangularity': data[3], 'circularity': data[4],
+                                                     'equiDiameter': data[5],
+                                                     'angle': data[6], 'classification': data[7]}
         dfAppend = self.get_df(dataframename)
-        dfAppend = pd.concat([rowDf, dfAppend], ignore_index=True)
+        # dfAppend.reset_index(drop=True, inplace=True)
+        # rowDf.reset_index(drop=True, inplace=True)
+        dfAppend = dfAppend.append(row, ignore_index=True)
         self.del_df(dataframename)
-        self.dfDict.update(dataframename, dfAppend)
+        tempDict = {dataframename: dfAppend}
+        self.dfDict.update(tempDict)
         return
 
     def export_df(self, dataframename: str) -> bool:
@@ -52,6 +60,8 @@ class DataFrameManager:
                 print("Could not export " + dataframename + " to a .csv file")
                 return False
 
-
-
+    def print_df(self, dataframename: str):
+        print("DATAFRAME IN PANDAS BEFORE EXPORT")
+        df = self.get_df(dataframename=dataframename)
+        print(df.to_string())
 
