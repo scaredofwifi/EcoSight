@@ -1,7 +1,7 @@
 # The socket server to communicate with the Android Studio Application and read in the images taken by the user
 
 import socket
-import preprocessing as process
+# import preprocessing as process
 
 # set up server listener
 listensocket = socket.socket()
