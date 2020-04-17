@@ -10,7 +10,9 @@ class DataFrameManager:
     def create_new_df(self, dataframename: str):
         newDf = pd.DataFrame(columns = ['aspectRatio', 'area', 'perimeter',
                                         'rectangularity', 'circularity', 'equiDiameter',
-                                        'angle', 'classification'])
+                                        'angle',  'red_mean', 'red_std',
+                                        'green_mean', 'green_std', 'blue_mean', 'blue_std', 'contrast',
+                                        'correlation', 'inverse_diff_moments', 'entropy','classification'])
         tempDict = {dataframename: newDf}
         self.dfDict.update(tempDict)
         return
@@ -38,8 +40,10 @@ class DataFrameManager:
         rowDf = pd.DataFrame(data)
         row = {'aspectRatio': data[0], 'area': data[1], 'perimeter': data[2],
                                                      'rectangularity': data[3], 'circularity': data[4],
-                                                     'equiDiameter': data[5],
-                                                     'angle': data[6], 'classification': data[7]}
+                                                     'equiDiameter': data[5], 'angle': data[6], 'red_mean': data[7], 'red_std': data[8],
+                                                      'green_mean': data[9], 'green_std': data[10], 'blue_mean': data[11],
+                                                      'blue_std': data[12], 'contrast': data[13], 'correlation': data[14],
+                                                      'inverse_diff_moments': data[15], 'entropy': data[16], 'classification': data[17]}
         dfAppend = self.get_df(dataframename)
         # dfAppend.reset_index(drop=True, inplace=True)
         # rowDf.reset_index(drop=True, inplace=True)
