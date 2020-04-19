@@ -1,4 +1,4 @@
-import csv
+# TRAINING OUR MODEL
 import numpy as np
 import pandas as pd
 import os
@@ -9,19 +9,32 @@ from matplotlib import pyplot
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.model_selection import KFold, StratifiedKFold
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
-import joblib
-import matplotlib.pyplot as plt
 
-# parameters
+warnings.filterwarnings('ignore')
+
+# read in data, delete rows with null values
+data = pd.read_csv('dataframes/all.csv')
+prep_data = data.dropna()
+# print(data.isnull().sum()) #rectangularity 170, circularity 170, angle 508
+
+# save prepared data set
+prep_data.to_csv('dataframes/all_prepared_data.csv', index=False)
+
+# tunable-parameters
 num_trees = 100
 test_size = 0.10
-seed = 9
+seed = 42
 train_path = "dataset/train"
 test_path = "dataset/test"
+csv_data = pd.read_csv("dataframes/all_prepared_data.csv",
+                       usecols=["aspectRatio", "area", "perimeter", "rectangularity",
+                                "circularity", "equiDiameter", "angle", "red_mean", "red_std",
+                                "green_mean", "green_std", "blue_mean", "blue_std", "contrast",
+                                "correlation", "inverse_diff_moments", "entropy"])
+csv_labels = pd.read_csv("dataframes/all_prepared_data.csv", usecols=["classification"])
 scoring = "accuracy"
 
 # get the training labels
@@ -34,68 +47,33 @@ if not os.path.exists(test_path):
     os.makedirs(test_path)
 
 # create all the machine learning models
-models = []
-models.append(('LR', LogisticRegression(random_state=seed)))
-models.append(('CART', DecisionTreeClassifier(random_state=seed)))
-models.append(('RF', RandomForestClassifier(n_estimators=num_trees, random_state=seed)))
+models = [('CART', DecisionTreeClassifier(random_state=seed)),
+          ('RF', RandomForestClassifier(n_estimators=num_trees, random_state=seed))]
 
 # variables to hold the results and names
 results = []
 names = []
 
-# import the feature vector and trained labels
-# my_data = np.genfromtxt('dataframes/all.csv', delimiter=',')
-# all_features = my_data.T[0:17]
-
-# read in data, delete rows with null values
-data = pd.read_csv('dataframes/all.csv')
-prep_data = data.dropna()
-# print(data.isnull().sum()) #rectangularity 170, circularity 170, angle 508
-
-# save prepared data set
-prep_data.to_csv('dataframes/all_prepared_data.csv', index=False)
-
-features = []
-labels = []
-
-# open data set and add necessary columns to features/labels
-with open('dataframes/all_prepared_data.csv', 'r') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        labels.append(row.get('classification'))
-        features.append(
-            [row['aspectRatio'], row['area'], row['perimeter'], row['rectangularity'], row['circularity'],
-             row['equiDiameter'], row['angle'], row['red_mean'], row['red_std'], row['green_mean'],
-             row['green_std'], row['blue_mean'], row['blue_std'], row['contrast'], row['correlation'],
-             row['inverse_diff_moments'], row['entropy']])
-
-le = LabelEncoder()
-target = le.fit_transform(labels)
-
-# convert to array
-all_features = np.array(features)
-classification_labels = np.array(labels)
+global_features = np.array(csv_data)
+global_labels = np.array(csv_labels)
 
 # verify the shape of the feature vector and labels
-print("[STATUS] features shape: {}".format(all_features.shape))
-print("[STATUS] labels shape: {}".format(classification_labels.shape))
+print("[STATUS] features shape: {}".format(global_features.shape))
+print("[STATUS] labels shape: {}".format(global_labels.shape))
+
 print("[STATUS] training started...")
 
 # split the training and testing data
-(trainDataGlobal, testDataGlobal, trainLabelsGlobal, testLabelsGlobal) = train_test_split(np.array(all_features),
-                                                                                          np.array(
-                                                                                              classification_labels),
+(trainDataGlobal, testDataGlobal, trainLabelsGlobal, testLabelsGlobal) = train_test_split(np.array(global_features),
+                                                                                          np.array(global_labels),
                                                                                           test_size=test_size,
                                                                                           random_state=seed)
 
-print("[STATUS] split train and test data...")
+print("[STATUS] splitting train and test data...")
 print("Train data  : {}".format(trainDataGlobal.shape))
 print("Test data   : {}".format(testDataGlobal.shape))
 print("Train labels: {}".format(trainLabelsGlobal.shape))
 print("Test labels : {}".format(testLabelsGlobal.shape))
-
-trainDataGlobal = trainDataGlobal.astype(np.float64)
-testDataGlobal = testDataGlobal.astype(np.float64)
 
 # 10-fold cross validation
 for name, model in models:
@@ -114,30 +92,65 @@ pyplot.boxplot(results)
 ax.set_xticklabels(names)
 # pyplot.show()
 
-# testing the model
 
-# fixed size for images
+
+# TESTING OUR MODEL
+'''
+# feature-descriptor-1: Hu Moments
+def fd_hu_moments(image):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    feature = cv2.HuMoments(cv2.moments(image)).flatten()
+    return feature
+
+# feature-descriptor-2: Haralick Texture
+def fd_haralick(image):
+    # convert the image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # compute the haralick texture feature vector
+    haralick = mahotas.features.haralick(gray).mean(axis=0)
+    # return the result
+    return haralick
+
+
+
+# feature-descriptor-3: Color Histogram
+def fd_histogram(image, mask=None):
+    # convert the image to HSV color-space
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    # compute the color histogram
+    hist = cv2.calcHist([image], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+    # normalize the histogram
+    cv2.normalize(hist, hist)
+    # return the histogram
+    return hist.flatten()
+
+'''
+
 fixed_size = tuple((500, 500))
+
 # create the model - Random Forests
-clf = RandomForestClassifier(n_estimators=num_trees, random_state=seed)
+clfRF = RandomForestClassifier(n_estimators=num_trees, random_state=seed)
 
 # fit the training data to the model
-clf.fit(trainDataGlobal, trainLabelsGlobal)
+clfRF.fit(trainDataGlobal, trainLabelsGlobal)
 
 # loop through the test images
 for file in glob.glob(test_path + "/*.jpg"):
+    # read the image
+    image = cv2.imread(file)
 
-    # feature extraction from preprocessing
-    print("Processing image...")
+    # resize the image
+    image = cv2.resize(image, fixed_size)
 
-    img1 = cv2.imread(file)
-    img1 = cv2.resize(img1, fixed_size)
-    #plt.imshow(img1, cmap="Greys_r")
+    # Global Feature extraction
+    #fv_hu_moments = fd_hu_moments(image)
+    # fv_haralick   = fd_haralick(image)
+    #fv_histogram = fd_histogram(image)
 
-    img = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     # simply converting the color image to grayscale here
-    grayScale = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    grayScale = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
     # here we will smooth the edges of the resulting grayscale image so that we can
     gBlur = cv2.GaussianBlur(grayScale, (5, 5), 0)
@@ -151,7 +164,6 @@ for file in glob.glob(test_path + "/*.jpg"):
     cnt = contours[0]
     plottedContours = cv2.drawContours(grayScale, contours, -1, (0, 255, 0), 5)
 
-    # FEATURE EXTRACTION
     moments = cv2.moments(cnt)
     area = cv2.contourArea(cnt)
     perimeter = cv2.arcLength(cnt, True)
@@ -173,35 +185,35 @@ for file in glob.glob(test_path + "/*.jpg"):
         aspectRatio = float(w) / h
         # print(aspectRatio)
     except:
-        aspectRatio = 'null'
+        aspectRatio = 0
 
     try:
         rectangularity = w * h / area
         # print(rectangularity)
     except:
-        rectangularity = 'null'
+        rectangularity = 0
 
     try:
         circularity = (perimeter ** 2 / area)
         # print(circularity)
     except:
-        circularity = 'null'
+        circularity = 0
 
     try:
         equiDiameter = np.sqrt(4 * area / np.pi)
         # print(equiDiameter)
     except:
-        equiDiameter = 'null'
+        equiDiameter = 0
     try:
         (x, y), (MA, ma), angle = cv2.fitEllipse(cnt)
     except:
         print("Could not calculate ellipse angle")
-        angle = 'null'
+        angle = 0
 
     # Color features
-    red_channel = img1[:, :, 0]
-    green_channel = img1[:, :, 1]
-    blue_channel = img1[:, :, 2]
+    red_channel = image[:, :, 0]
+    green_channel = image[:, :, 1]
+    blue_channel = image[:, :, 2]
     blue_channel[blue_channel == 255] = 0
     green_channel[green_channel == 255] = 0
     red_channel[red_channel == 255] = 0
@@ -227,7 +239,6 @@ for file in glob.glob(test_path + "/*.jpg"):
     correlation = 0
     inverse_diff_moments = 0
     entropy = 0
-    angle = 0
 
     print("Done processing image: " + file)
 
@@ -236,16 +247,15 @@ for file in glob.glob(test_path + "/*.jpg"):
                                 circularity, equiDiameter, angle, red_mean, red_std,
                                 green_mean, green_std, blue_mean, blue_std, contrast,
                                 correlation, inverse_diff_moments, entropy])
-    print(global_feature)
-    global_feature = global_feature.reshape(1, -1)
+
+    # global_feature = global_feature.reshape(1, -1)
     # scale features in the range (0-1)
     scaler = MinMaxScaler(feature_range=(0, 1))
-    rescaled_feature = scaler.fit_transform(global_feature)
+    # rescaled_feature = scaler.fit_transform(global_feature)
 
     # predict label of test image
-    prediction = clf.predict(rescaled_feature.reshape(1, -1))[0]
+    prediction = clfRF.predict(global_feature.reshape(1, -1))[0]
     print(prediction)
-
     # show predicted label on image
     #cv2.putText(image, train_labels[prediction], (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 255), 3)
 
@@ -253,4 +263,4 @@ for file in glob.glob(test_path + "/*.jpg"):
     #plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     #plt.show()
 
-print("done")
+print("done!")
