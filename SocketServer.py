@@ -11,7 +11,7 @@ Port = 8000
 maxConnections = 999
 IP = socket.gethostname()  # get hostname of current machine
 
-listensocket.bind(('', Port))
+listensocket.bind('192.168.1.96', Port)
 
 # start server
 listensocket.listen(maxConnections)
