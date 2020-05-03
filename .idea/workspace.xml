@@ -2,10 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82b006ad-c4cb-4ccc-a1f8-f79739a9da79" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/dataset/organize_dataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backgroundsubtract.py" beforeDir="false" afterPath="$PROJECT_DIR$/backgroundsubtract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dataframeManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataframeManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SocketServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/SocketServer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/all.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/bluebell.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/buttercup.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/coltsfoot.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/cowslip.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/crocus.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/daffodil.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/daisy.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/dandelion.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/fritillary.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/iris.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/lilyvalley.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/pansy.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/snowdrop.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/sunflower.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/tigerlily.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/tulip.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataframes/windflower.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +41,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/preprocessing.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/dataframeManager.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectId" id="1YdenTNdQaBpE3JhGYwQuBIOnS7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -33,7 +56,28 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="settings.editor.selected.configurable" value="terminal" />
   </component>
-  <component name="RunManager" selected="Python.preprocessing (1)">
+  <component name="RunManager" selected="Python.DM_Data_Prep">
+    <configuration name="DM_Data_Prep" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EcoSight" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/AppData/Local/Temp" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/AppData/Local/Temp/DM_Data_Prep.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="mesquitePreprocessing" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EcoSight" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -47,6 +91,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mesquitePreprocessing.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="organize_dataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EcoSight" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dataset" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dataset/organize_dataset.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -97,14 +162,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="train_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EcoSight" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Python.preprocessing" />
+      <item itemvalue="Python.DM_Data_Prep" />
       <item itemvalue="Python.mesquitePreprocessing" />
+      <item itemvalue="Python.organize_dataset" />
       <item itemvalue="Python.preprocessing (1)" />
+      <item itemvalue="Python.preprocessing" />
+      <item itemvalue="Python.train_test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.DM_Data_Prep" />
+        <item itemvalue="Python.train_test" />
         <item itemvalue="Python.preprocessing (1)" />
+        <item itemvalue="Python.organize_dataset" />
         <item itemvalue="Python.mesquitePreprocessing" />
       </list>
     </recent_temporary>
@@ -123,6 +215,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="4072" y="743" key="#Notifications" timestamp="1588444093340">
+      <screen x="3840" y="743" width="1280" height="570" />
+    </state>
+    <state x="4072" y="743" key="#Notifications/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1588444093340" />
     <state x="225" y="73" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583349021327">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
@@ -131,34 +227,38 @@
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
     <state x="4260" y="769" key="FileChooserDialogImpl/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1583376926126" />
-    <state width="1259" height="71" key="GridCell.Tab.0.bottom" timestamp="1586208658744">
+    <state width="1259" height="116" key="GridCell.Tab.0.bottom" timestamp="1587333581247">
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
-    <state width="1259" height="71" key="GridCell.Tab.0.bottom/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1586208658744" />
+    <state width="1259" height="116" key="GridCell.Tab.0.bottom/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1587333581247" />
     <state width="745" height="220" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1583351142544" />
-    <state width="1259" height="71" key="GridCell.Tab.0.center" timestamp="1586208658743">
+    <state width="1259" height="116" key="GridCell.Tab.0.center" timestamp="1587333581247">
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
-    <state width="1259" height="71" key="GridCell.Tab.0.center/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1586208658743" />
+    <state width="1259" height="116" key="GridCell.Tab.0.center/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1587333581247" />
     <state width="745" height="220" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1583351142544" />
-    <state width="1259" height="71" key="GridCell.Tab.0.left" timestamp="1586208658743">
+    <state width="1259" height="116" key="GridCell.Tab.0.left" timestamp="1587333581247">
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
-    <state width="1259" height="71" key="GridCell.Tab.0.left/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1586208658743" />
+    <state width="1259" height="116" key="GridCell.Tab.0.left/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1587333581247" />
     <state width="745" height="220" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1583351142543" />
-    <state width="1259" height="71" key="GridCell.Tab.0.right" timestamp="1586208658743">
+    <state width="1259" height="116" key="GridCell.Tab.0.right" timestamp="1587333581247">
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
-    <state width="1259" height="71" key="GridCell.Tab.0.right/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1586208658743" />
+    <state width="1259" height="116" key="GridCell.Tab.0.right/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1587333581247" />
     <state width="745" height="220" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1583351142544" />
     <state x="3981" y="743" key="SettingsEditor" timestamp="1583376928542">
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
     <state x="3981" y="743" key="SettingsEditor/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1583376928542" />
-    <state x="4233" y="908" key="com.intellij.ide.util.TipDialog" timestamp="1583359074365">
+    <state x="4233" y="908" key="com.intellij.ide.util.TipDialog" timestamp="1588537578280">
       <screen x="3840" y="743" width="1280" height="570" />
     </state>
-    <state x="4233" y="908" key="com.intellij.ide.util.TipDialog/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1583359074365" />
+    <state x="4233" y="908" key="com.intellij.ide.util.TipDialog/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1588537578280" />
     <state x="471" y="242" key="com.intellij.ide.util.TipDialog/0.0.1536.834@0.0.1536.834" timestamp="1583348824772" />
+    <state x="4202" y="940" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1587523625639">
+      <screen x="3840" y="743" width="1280" height="570" />
+    </state>
+    <state x="4202" y="940" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1536.834/3840.743.1280.570@3840.743.1280.570" timestamp="1587523625639" />
   </component>
 </project>
