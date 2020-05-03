@@ -2,6 +2,7 @@
 
 import socket
 from train_test import Demo
+import time
 # import preprocessing as process
 
 # set up server listener
@@ -27,13 +28,21 @@ f = open('incoming.jpg', 'wb')  # TODO : change the filepath of this incoming im
 data_in = 1
 
 # receive image
+count = 0
+
 while data_in:
-    data_in = clientsocket.recv(1024)  # get incoming data
+
+    data_in = clientsocket.recv(1024).decode()  # get incoming data
     if not data_in:
-        break
+        time.sleep(2)
+        if count == 10:
+            print("Closing socket session. Timed out with no data_in")
+            break
+        else:
+            count = count + 1
     f.write(data_in)  # writes data to file
-
-
+    ret = d.demo_classify()
+    clientsocket.send(ret.encode())
 
 # process image
 # process.imgpreprocessing(data)
@@ -42,6 +51,6 @@ while data_in:
 
 # close socket
 f.close()
-# clientsocket.close()
+clientsocket.close()
 listensocket.close()
 del d
