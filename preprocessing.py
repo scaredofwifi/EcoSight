@@ -160,33 +160,49 @@ def imgpreprocessing(imgFile: str, classification: str) -> list:
      inverse_diff_moments = ht_mean[4]
      entropy = ht_mean[8]
 
-     attrList = list([aspectRatio, area, perimeter, rectangularity,
-                      circularity, equiDiameter, angle, red_mean, red_std,
-                      green_mean, green_std, blue_mean, blue_std, contrast,
-                      correlation, inverse_diff_moments, entropy, classification])
+     # find out if we are trying to classify or generate a dataframe
+     # if classification argument is UNKNOWN we forego appending classification to the attrList
+     if classification == 'UNKNOWN':
+          attrList = list([aspectRatio, area, perimeter, rectangularity,
+                           circularity, equiDiameter, angle, red_mean, red_std,
+                           green_mean, green_std, blue_mean, blue_std, contrast,
+                           correlation, inverse_diff_moments, entropy])
+     else:
+          attrList = list([aspectRatio, area, perimeter, rectangularity,
+                           circularity, equiDiameter, angle, red_mean, red_std,
+                           green_mean, green_std, blue_mean, blue_std, contrast,
+                           correlation, inverse_diff_moments, entropy, classification])
+
 
      print("Done processing image: " + imgFile + '\n Attribute List: ' + str(attrList))
      return attrList
 
+def generate_dataframes():
 
-datasetPath = os.getcwd() + '\\dataset\\train\\'
-dsPath = os.getcwd() + "/"
-dfm = DataFrameManager()
+     #####################################################
+     # METHOD USED TO GENERATE DATAFRAMES OF EXTRACTED   #
+     # FEATURES FROM DATASET TO TRAIN CLASSIFICATION MODEL#
+     ######################################################
 
-print("File path: " + datasetPath)
-print(os.path.exists(datasetPath))
+     datasetPath = os.getcwd() + '\\dataset\\dataset\\train\\'
+     dsPath = os.getcwd() + "/"
+     dfm = DataFrameManager()
+
+     print("File path: " + datasetPath)
+     print(os.path.exists(datasetPath))
+
+     dfm.create_new_df(dataframename='all')
+     for directory in os.listdir(datasetPath):
+          dfm.create_new_df(dataframename=directory)
+          newPath = datasetPath + directory
+          for file in os.listdir(newPath):
+               tempPath = newPath + "\\" + file
+               attrList = imgpreprocessing(tempPath, directory)
+               dfm.append_to_df(dataframename=directory, data=attrList)
+               dfm.append_to_df(dataframename='all', data=attrList)
+          dfm.print_df(dataframename=directory)
+          dfm.export_df(dataframename=directory)
+
+     dfm.export_df(dataframename='all')
 
 
-dfm.create_new_df(dataframename='all')
-for directory in os.listdir(datasetPath):
-     dfm.create_new_df(dataframename=directory)
-     newPath = datasetPath + directory
-     for file in os.listdir(newPath):
-          tempPath = newPath + "\\" + file
-          attrList = imgpreprocessing(tempPath, directory)
-          dfm.append_to_df(dataframename=directory, data=attrList)
-          dfm.append_to_df(dataframename='all', data=attrList)
-     dfm.print_df(dataframename=directory)
-     dfm.export_df(dataframename=directory)
-
-dfm.export_df(dataframename='all')

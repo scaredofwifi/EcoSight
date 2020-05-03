@@ -5,7 +5,10 @@ import os
 import glob
 import cv2
 import warnings
+import time
+import mahotas as mh
 from matplotlib import pyplot
+import preprocessing as pp
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.model_selection import KFold, StratifiedKFold
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
@@ -107,114 +110,10 @@ clfRF.fit(trainDataGlobal, trainLabelsGlobal)
 
 # loop through the test images
 for file in glob.glob(test_path + "/*.jpg"):
-    # read the image
-    image = cv2.imread(file)
 
-    # resize the image
-    image = cv2.resize(image, fixed_size)
-
-    # FEATURE EXTRACTION
-
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    # simply converting the color image to grayscale here
-    grayScale = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-
-    # here we will smooth the edges of the resulting grayscale image so that we can
-    gBlur = cv2.GaussianBlur(grayScale, (5, 5), 0)
-    retVal, thresholdImg = cv2.threshold(gBlur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-
-    # so now we use a method called "morphological transformation" to close the holes of the binary image
-    tempKernel = np.ones((10, 10), np.uint8)
-    closedImg = cv2.morphologyEx(thresholdImg, cv2.MORPH_CLOSE, tempKernel)
-
-    contours, _ = cv2.findContours(closedImg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    cnt = contours[0]
-    plottedContours = cv2.drawContours(grayScale, contours, -1, (0, 255, 0), 5)
-
-    moments = cv2.moments(cnt)
-    area = cv2.contourArea(cnt)
-    perimeter = cv2.arcLength(cnt, True)
-
-    rect = cv2.minAreaRect(cnt)
-    box = cv2.boxPoints(rect)
-    box = np.int0(box)
-    contours_im = cv2.drawContours(closedImg, [box], 0, (255, 255, 255), 2)
-
-    try:
-        ellipse = cv2.fitEllipse(cnt)
-        im = cv2.ellipse(closedImg, ellipse, (255, 255, 255), 2)
-        # plt.imshow(closedImg, cmap="Greys_r")
-    except:
-        print("Fitting an ellipse failed")
-
-    x, y, w, h = cv2.boundingRect(cnt)
-    try:
-        aspectRatio = float(w) / h
-        # print(aspectRatio)
-    except:
-        aspectRatio = 0
-
-    try:
-        rectangularity = w * h / area
-        # print(rectangularity)
-    except:
-        rectangularity = 0
-
-    try:
-        circularity = (perimeter ** 2 / area)
-        # print(circularity)
-    except:
-        circularity = 0
-
-    try:
-        equiDiameter = np.sqrt(4 * area / np.pi)
-        # print(equiDiameter)
-    except:
-        equiDiameter = 0
-    try:
-        (x, y), (MA, ma), angle = cv2.fitEllipse(cnt)
-    except:
-        print("Could not calculate ellipse angle")
-        angle = 0
-
-    # Color features
-    red_channel = image[:, :, 0]
-    green_channel = image[:, :, 1]
-    blue_channel = image[:, :, 2]
-    blue_channel[blue_channel == 255] = 0
-    green_channel[green_channel == 255] = 0
-    red_channel[red_channel == 255] = 0
-
-    red_mean = np.mean(red_channel)
-    green_mean = np.mean(green_channel)
-    blue_mean = np.mean(blue_channel)
-
-    red_std = np.std(red_channel)
-    green_std = np.std(green_channel)
-    blue_std = np.std(blue_channel)
-
-    # Texture features
-    '''
-    textures = mh.features.haralick(grayScale)
-    ht_mean = textures.mean(axis=0)
-    contrast = ht_mean[1]
-    correlation = ht_mean[2]
-    inverse_diff_moments = ht_mean[4]
-    entropy = ht_mean[8]
-    '''
-    contrast = 0
-    correlation = 0
-    inverse_diff_moments = 0
-    entropy = 0
-
-    print("Done processing image: " + file)
-
+    features = pp.imgpreprocessing(file, 'UNKNOWN')
     # Concatenate features
-    global_feature = np.hstack([aspectRatio, area, perimeter, rectangularity,
-                                circularity, equiDiameter, angle, red_mean, red_std,
-                                green_mean, green_std, blue_mean, blue_std, contrast,
-                                correlation, inverse_diff_moments, entropy])
+    global_feature = np.hstack(features)
 
     # global_feature = global_feature.reshape(1, -1)
     # scale features in the range (0-1)
@@ -232,3 +131,20 @@ for file in glob.glob(test_path + "/*.jpg"):
     #plt.show()
 
 print("done!")
+
+
+class Demo:
+
+    p_s = ['daffodil', 'daisy', 'pansy', 'sunflower']
+
+    def __init__(self):
+        self.iter = 0
+
+    def __del__(self):
+        self.iter = 0
+
+    def demo_classify(self, iter: int) -> str:
+        time.sleep(4)
+        ret = self.dem_list[iter]
+        self.iter = self.iter + 1
+        return ret
