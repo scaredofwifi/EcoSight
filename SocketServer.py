@@ -9,7 +9,7 @@ import preprocessing as process
 listensocket = socket.socket()
 Port = 8000
 maxConnections = 999
-IP = '192.168.1.96'  # get hostname of current machine
+IP = socket.gethostname()  # get hostname of current machine
 
 listensocket.bind((IP, Port))
 
