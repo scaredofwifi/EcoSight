@@ -16,6 +16,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
+
 warnings.filterwarnings('ignore')
 
 # read in data, delete rows with null values
@@ -109,7 +110,7 @@ clfRF = RandomForestClassifier(n_estimators=num_trees, random_state=seed)
 clfRF.fit(trainDataGlobal, trainLabelsGlobal)
 
 # loop through the test images
-for file in glob.glob(test_path + "/*.jpg"):
+def classify(filePath: str) -> str:
 
     features = pp.imgpreprocessing(file, 'UNKNOWN')
     # Concatenate features
@@ -122,7 +123,7 @@ for file in glob.glob(test_path + "/*.jpg"):
 
     # predict label of test image
     prediction = clfRF.predict(global_feature.reshape(1, -1))[0]
-    print(prediction)
+    return prediction
     # show predicted label on image
     #cv2.putText(image, train_labels[prediction], (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 255), 3)
 
@@ -132,19 +133,3 @@ for file in glob.glob(test_path + "/*.jpg"):
 
 print("done!")
 
-
-class Demo:
-
-    p_s = ['daffodil', 'daisy', 'pansy', 'sunflower']
-
-    def __init__(self):
-        self.iter = 0
-
-    def __del__(self):
-        self.iter = 0
-
-    def demo_classify(self, iter: int) -> str:
-        time.sleep(4)
-        ret = self.dem_list[iter]
-        self.iter = self.iter + 1
-        return ret
